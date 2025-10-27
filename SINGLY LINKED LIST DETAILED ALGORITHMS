@@ -1,0 +1,1105 @@
+Singly Linked List - Detailed Algorithms
+Each node contains:
+•
+data (value)
+•
+next (pointer to the next node)
+Initially:
+•
+head = NULL (list is empty)
+1. Creation (Insert at End)
+Algorithm:
+Step 1: Create a new node (newNode) with given data
+Step 2: Set newNode->next = NULL
+Step 3: If head == NULL (list empty)
+Set head = newNode
+Else
+Initialize temp = head
+While temp->next != NULL
+temp = temp->next (Move temp to next node)
+End While
+Set temp->next = newNode
+Pointer adjustments:
+•
+New node created
+•
+Traversing till the last node
+•
+Last node's next pointer is made to point to new node
+2. Insertion at Beginning
+Algorithm:
+Step 1: Create a new node (newNode) with given data
+Step 2: Set newNode->next = head
+Step 3: Set head = newNode
+Pointer adjustments:
+•
+New node's next points to current head
+•
+Head is updated to the new node
+3. Insertion at a Specific Position
+Algorithm:
+Step 1: Create a new node (newNode) with given data
+Step 2: If position == 1
+Set newNode->next = head
+Set head = newNode
+RETURN
+Step 3: Initialize temp = head
+Step 4: Repeat (position - 2) times
+If temp == NULL
+Position is invalid, RETURN
+temp = temp->next
+Step 5: Set newNode->next = temp->next
+Step 6: Set temp->next = newNode
+Pointer adjustments:
+•
+Traverse till node at (position - 1)
+•
+Insert new node after it by adjusting two pointers.
+4. Deletion at Beginning
+Algorithm:
+Step 1: If head == NULL
+List is empty, RETURN
+Step 2: Create temp = head
+Step 3: Set head = head->next
+Step 4: Free temp
+Pointer adjustments:
+•
+Move head to next node
+•
+Free original head node
+5. Deletion at End
+Algorithm:
+Step 1: If head == NULL
+List is empty, RETURN
+Step 2: If head->next == NULL
+Only one node present
+Free head
+Set head = NULL
+RETURN
+Step 3: Initialize temp = head
+Step 4: While temp->next->next != NULL
+temp = temp->next
+Step 5: Free temp->next
+Step 6: Set temp->next = NULL
+Pointer adjustments:
+•
+Traverse to the second last node
+•
+Free last node
+•
+Set second last node's next to NULL
+6. Deletion at Specific Position
+Algorithm:
+Step 1: If head == NULL
+List is empty, RETURN
+Step 2: If position == 1
+Create temp = head
+Set head = head->next
+Free temp
+RETURN
+Step 3: Initialize temp = head
+Step 4: Repeat (position - 2) times
+If temp == NULL
+Position invalid, RETURN
+temp = temp->next
+Step 5: If temp->next == NULL
+Position invalid, RETURN
+Step 6: Create deleteNode = temp->next
+Step 7: Set temp->next = deleteNode->next
+Step 8: Free deleteNode
+Pointer adjustments:
+•
+Traverse to node before the one to delete
+•
+Adjust next pointers to skip the node
+•
+Free deleted node
+7. Traversal (Display Linked List)
+Algorithm:
+Step 1: If head == NULL
+Print "List is empty", RETURN
+Step 2: Initialize temp = head
+Step 3: While temp != NULL
+Print temp->data
+temp = temp->next
+Pointer adjustments:
+•
+Move temp one by one and print data
+Example
+C Program: Singly Linked List (Insertion,deletion, Traversal)
+#include <stdio.h>
+#include <stdlib.h>
+// Define the Node structure
+struct Node {
+int data;
+struct Node* next;
+};
+// Head pointer
+struct Node* head = NULL;
+// Function to create and insert a node at the end
+void insertAtEnd(int value) {
+struct Node* newNode = (struct Node*)malloc(sizeof(struct Node));
+newNode->data = value;
+newNode->next = NULL;
+if (head == NULL) {
+head = newNode;
+} else {
+struct Node* temp = head;
+while (temp->next != NULL) {
+temp = temp->next;
+}
+temp->next = newNode;
+}
+}
+// Function to insert at beginning
+void insertAtBeginning(int value) {
+struct Node* newNode = (struct Node*)malloc(sizeof(struct Node));
+newNode->data = value;
+newNode->next = head;
+head = newNode;
+}
+// Function to insert at a given position
+void insertAtPosition(int value, int position) {
+struct Node* newNode = (struct Node*)malloc(sizeof(struct Node));
+newNode->data = value;
+newNode->next = NULL;
+if (position == 1) {
+newNode->next = head;
+head = newNode;
+return;
+}
+struct Node* temp = head;
+for (int i = 1; i < position - 1; i++) {
+if (temp == NULL) {
+printf("Invalid position!\n");
+return;
+}
+temp = temp->next;
+}
+newNode->next = temp->next;
+temp->next = newNode;
+}
+// Function to delete at beginning
+void deleteAtBeginning() {
+if (head == NULL) {
+printf("List is empty!\n");
+return;
+}
+struct Node* temp = head;
+head = head->next;
+free(temp);
+}
+// Function to delete at end
+void deleteAtEnd() {
+if (head == NULL) {
+printf("List is empty!\n");
+return;
+}
+if (head->next == NULL) {
+free(head);
+head = NULL;
+return;
+}
+struct Node* temp = head;
+while (temp->next->next != NULL) {
+temp = temp->next;
+}
+free(temp->next);
+temp->next = NULL;
+}
+// Function to delete at a given position
+void deleteAtPosition(int position) {
+if (head == NULL) {
+printf("List is empty!\n");
+return;
+}
+if (position == 1) {
+struct Node* temp = head;
+head = head->next;
+free(temp);
+return;
+}
+struct Node* temp = head;
+for (int i = 1; i < position - 1; i++) {
+if (temp == NULL) {
+printf("Invalid position!\n");
+return;
+}
+temp = temp->next;
+}
+if (temp->next == NULL) {
+printf("Invalid position!\n");
+return;
+}
+struct Node* deleteNode = temp->next;
+temp->next = deleteNode->next;
+free(deleteNode);
+}
+// Function to display the list
+void display() {
+if (head == NULL) {
+printf("List is empty!\n");
+return;
+}
+struct Node* temp = head;
+printf("Linked List: ");
+while (temp != NULL) {
+printf("%d -> ", temp->data);
+temp = temp->next;
+}
+printf("NULL\n");
+}
+// Main function
+int main() {
+int choice, value, position;
+while (1) {
+printf("\n--- Singly Linked List Operations ---\n");
+printf("1. Insert at End\n");
+printf("2. Insert at Beginning\n");
+printf("3. Insert at Position\n");
+printf("4. Delete at Beginning\n");
+printf("5. Delete at End\n");
+printf("6. Delete at Position\n");
+printf("7. Display List\n");
+printf("8. Exit\n");
+printf("Enter your choice: ");
+scanf("%d", &choice);
+switch (choice) {
+case 1:
+printf("Enter value to insert at end: ");
+scanf("%d", &value);
+insertAtEnd(value);
+break;
+case 2:
+printf("Enter value to insert at beginning: ");
+scanf("%d", &value);
+insertAtBeginning(value);
+break;
+case 3:
+printf("Enter value to insert: ");
+scanf("%d", &value);
+printf("Enter position: ");
+scanf("%d", &position);
+insertAtPosition(value, position);
+break;
+case 4:
+deleteAtBeginning();
+break;
+case 5:
+deleteAtEnd();
+break;
+case 6:
+printf("Enter position to delete: ");
+scanf("%d", &position);
+deleteAtPosition(position);
+break;
+case 7:
+display();
+break;
+case 8:
+printf("Exiting...\n");
+exit(0);
+default:
+printf("Invalid Choice! Try again.\n");
+}
+}
+return 0;
+}
+Stack Operations
+Operation
+Meaning
+Push
+Add an element on the top of the stack
+Pop
+Remove the top element
+Peek
+View the top element without removing
+isEmpty
+Check whether the stack is empty
+How to Implement a Stack using Linked List
+Instead of using an array (fixed size), we can use a linked list where each node contains:
+•
+The data part.
+•
+The pointer to the next node.
+And we use a pointer top to always point to the topmost node.
+Structure of a Node
+In C:
+struct Node {
+int data;
+struct Node* next;
+};
+Algorithms
+1. Initialize the Stack
+Set top = NULL
+2. Push Operation
+1. Create a new node.
+2. Assign data to the new node.
+3. Set newNode->next = top.
+4. Set top = newNode.
+3. Pop Operation
+1. If top == NULL
+Output "Stack Underflow"
+Exit
+2. Else
+Set temp = top
+Store temp->data into poppedValue
+Move top to top->next
+Free temp
+Return poppedValue
+4. Peek Operation
+1. If top == NULL
+Output "Stack is empty"
+Exit
+2. Else
+Output top->data
+C Program Stack using linked list
+#include<stdio.h>
+#include<conio.h>
+#include <stdlib.h>
+struct Node
+{
+int data;
+struct Node *next;
+};
+struct Node *top=NULL;
+void push(int value) {
+struct Node* newNode = (struct Node*)malloc(sizeof(struct Node));
+newNode->data = value;
+newNode->next = top;
+top = newNode;
+}
+int pop() {
+if (top == NULL) {
+printf("Stack is empty.\n");
+return -1; // or any value to indicate an error
+}
+int poppedValue = top->data;
+struct Node* temp = top;
+top = top->next;
+free(temp);
+return poppedValue;
+}
+void displayStack() {
+if (top == NULL) {
+printf("Stack is empty.\n");
+} else {
+struct Node* temp = top;
+printf("Stack content:\n");
+while (temp != NULL) {
+printf("%d-->", temp->data);
+temp = temp->next;
+}
+printf("NULL\n");
+}
+}
+void main()
+{
+int ch;
+do
+{
+printf("\nMenu\n----\n1. Push\n2. Pop\n3.display\n4. Exit");
+printf("\nEnter the choice:");
+scanf("%d",&ch);
+switch(ch)
+{
+case 1:
+printf("Enter the data to push:");
+int data;
+scanf("%d",&data);
+push(data);
+displayStack();
+break;
+case 2:
+int rv;
+rv=pop();
+if(rv!=-1) printf("Popped Value is:%d\n",rv);
+displayStack();
+break;
+case 3:
+displayStack();
+break;
+case 4:
+exit(0);
+default:
+printf("There is no such operation:");
+}
+}
+while(1);
+}
+Algorithms for Queue using Linked List
+Enqueue (Insert at the end)
+1. Create a new node and assign value to its data field.
+2. Set new node's next pointer to NULL.
+3. If front == NULL (Queue is empty):
+a. Set front = new node
+b. Set rear = new node
+4. Else:
+a. Set rear->next = new node
+b. Set rear = new node
+5. End
+Dequeue (Remove from Front)
+Algorithm Dequeue():
+1. If front == NULL:
+a. Queue is empty. (Underflow condition)
+b. Return error or -1
+2. Else:
+a. Save front node temporarily (temp = front)
+b. Store temp->data to return later
+c. Move front to front->next
+d. If front == NULL after moving:
+i. Set rear = NULL (Queue became empty)
+e. Free the temporary node (temp)
+f. Return the stored data
+3. End
+3. Display Queue
+1. If front == NULL:
+a. Print "Queue is empty"
+2. Else:
+a. Start from temp = front
+b. While temp is not NULL:
+i. Print temp->data
+ii. Move temp to temp->next
+3. End
+C program - Queue using Linked List
+#include<stdio.h> #include<conio.h> #include <stdlib.h> struct Node { int data; struct Node *next; }*front=NULL,*rear=NULL; void enqueue() { struct Node *newnode=(struct Node*)malloc(sizeof(struct Node)); printf("Enter data:"); scanf("%d",&newnode->data); newnode->next=NULL; if(front==NULL) { front=newnode; rear=newnode; } else { rear->next=newnode; rear=newnode;
+} } int dequeue() { if (front==NULL) {printf("Queue is empty...underflow");return -1;} else { struct Node *temp; temp=front; int rv=front->data; front=front->next; if(front==NULL) rear=NULL; free(temp); return(rv); } } void displayQ() { struct Node *temp=front; while(temp!=NULL) { printf(" %d---->",temp->data); temp=temp->next; } printf(" NULL"); } void main() { int ch; do { printf("\nMenu\n----\n1.Enqueue\n2.Dequeue\n3.Display\n4.Exit"); printf("\nEnter the choice:"); scanf("%d",&ch); switch(ch) { case 1: enqueue(); displayQ(); break; case 2: int data; data=dequeue(); if(data!=-1) printf("The dequed data is:%d\n",data); displayQ();
+break; case 3: displayQ(); break; case 4: exit(0); default: printf("There is no such operation:"); } } while(1); }
+Algorithm to Create a Polynomial Linked List
+Algorithm CreatePolynomial():
+1.
+Start with head = NULL
+2.
+Repeat until the user finishes entering terms:
+o
+Read coefficient and exponent
+o
+Create a new node with the given coefficient and exponent
+o
+If head == NULL:
+▪
+Set head = new node
+o
+Else:
+▪
+Attach new node at the end
+3.
+Return head
+Adding Two Polynomials
+•
+Each polynomial is stored as a linked list with (coefficient, exponent) pairs.
+•
+Compare exponents:
+o
+If exponents are equal, add coefficients and create a new term.
+o
+If exponent of first polynomial is greater, copy that term.
+o
+If exponent of second polynomial is greater, copy that term.
+•
+Move forward in the respective list after handling each term.
+Algorithm: AddPolynomials(P1, P2)
+Input: Two polynomial linked lists P1 and P2 (sorted by decreasing exponents).
+Output: A new polynomial linked list representing the sum.
+Steps:
+1.
+Start
+2.
+Create a new empty list Result
+3.
+Set pointers ptr1 to head of P1, and ptr2 to head of P2
+4.
+While both ptr1 and ptr2 are not NULL:
+o
+If ptr1->exp > ptr2->exp:
+▪
+Create new node with ptr1->coeff and ptr1->exp
+▪
+Move ptr1 to next node
+o
+Else if ptr2->exp > ptr1->exp:
+▪
+Create new node with ptr2->coeff and ptr2->exp
+▪
+Move ptr2 to next node
+o
+Else (exponents are equal):
+▪
+Sum = ptr1->coeff + ptr2->coeff
+▪
+If sum ≠ 0:
+▪
+Create new node with sum and ptr1->exp
+▪
+Move both ptr1 and ptr2 to next nodes
+5.
+While ptr1 is not NULL:
+o
+Copy remaining terms from ptr1 to Result
+6.
+While ptr2 is not NULL:
+o
+Copy remaining terms from ptr2 to Result
+7.
+End
+Example
+Suppose:
+P1 = 5x⁴ + 3x² + 1 P2 = 6x³ + 2x² + 8
+Addition step-by-step:
+Compare
+Action
+5x⁴ vs 6x³
+5x⁴ copied
+6x³ vs 3x²
+6x³ copied
+3x² vs 2x²
+3+2 = 5 ⇒ 5x²
+1 vs 8
+1+8 = 9 ⇒ 9
+Result = 5x⁴ + 6x³ + 5x² + 9
+C program - Polynomial addition using Linked List
+#include <stdio.h>
+#include <stdlib.h>
+struct Node {
+int coeff;
+int exp;
+struct Node *next;
+};
+struct Node *createNode(int coeff, int exp) {
+struct Node *newNode = (struct Node *)malloc(sizeof(struct Node));
+newNode->coeff = coeff;
+newNode->exp = exp;
+newNode->next = NULL;
+return newNode;
+}
+struct Node *insertNode(struct Node *head, int coeff, int exp) {
+struct Node *newNode = createNode(coeff, exp);
+if (head == NULL) {
+head = newNode;
+} else {
+struct Node *temp = head;
+while (temp->next != NULL)
+temp = temp->next;
+temp->next = newNode;
+}
+return head;
+}
+void display(struct Node *head) {
+struct Node *temp = head;
+if (temp == NULL) {
+printf("0\n");
+return;
+}
+while (temp != NULL) {
+printf("%dx^%d", temp->coeff, temp->exp);
+if (temp->next != NULL)
+printf(" + ");
+temp = temp->next;
+}
+printf("\n");
+}
+struct Node *addPolynomials(struct Node *p1, struct Node *p2) {
+struct Node *result = NULL;
+while (p1 != NULL && p2 != NULL) {
+if (p1->exp > p2->exp) {
+result = insertNode(result, p1->coeff, p1->exp);
+p1 = p1->next;
+} else if (p2->exp > p1->exp) {
+result = insertNode(result, p2->coeff, p2->exp);
+p2 = p2->next;
+} else {
+int sum = p1->coeff + p2->coeff;
+if (sum != 0)
+result = insertNode(result, sum, p1->exp);
+p1 = p1->next;
+p2 = p2->next;
+}
+}
+while (p1 != NULL) {
+result = insertNode(result, p1->coeff, p1->exp);
+p1 = p1->next;
+}
+while (p2 != NULL) {
+result = insertNode(result, p2->coeff, p2->exp);
+p2 = p2->next;
+}
+return result;
+}
+void main() {
+struct Node *p1 = NULL, *p2 = NULL, *sum = NULL;
+int n,m, coeff, exp, i;
+printf("Enter number of terms in first polynomial: ");
+scanf("%d", &n);
+for (i = 0; i < n; i++) {
+printf("Enter coefficient and exponent for term %d: ", i+1);
+scanf("%d%d", &coeff, &exp);
+p1 = insertNode(p1, coeff, exp);
+}
+printf("\nEnter number of terms in second polynomial: ");
+scanf("%d", &m);
+for (i = 0; i < m; i++) {
+printf("Enter coefficient and exponent for term %d: ", i+1);
+scanf("%d%d", &coeff, &exp);
+p2 = insertNode(p2, coeff, exp);
+}
+printf("\nFirst Polynomial: ");
+display(p1);
+printf("Second Polynomial: ");
+display(p2);
+sum = addPolynomials(p1, p2);
+printf("\nSum of Polynomials: ");
+display(sum);
+}
+Output
+Enter number of terms in first polynomial: 3
+Enter coefficient and exponent for term 1: 5 4
+Enter coefficient and exponent for term 2: 3 2
+Enter coefficient and exponent for term 3: 1 0
+Enter number of terms in second polynomial: 3
+Enter coefficient and exponent for term 1: 6 3
+Enter coefficient and exponent for term 2: 2 2
+Enter coefficient and exponent for term 3: 8 0
+First Polynomial: 5x^4 + 3x^2 + 1x^0
+Second Polynomial: 6x^3 + 2x^2 + 8x^0
+Sum of Polynomials: 5x^4 + 6x^3 + 5x^2 + 9x^0
+Polynomial Multiplication
+Suppose we have two polynomials:
+•
+P(x): represented by a linked list poly1
+•
+Q(x): represented by a linked list poly2
+Each node contains:
+•
+coefficient
+•
+exponent
+•
+pointer to next node
+Algorithm Steps:
+Step 1: Start with two polynomials poly1 and poly2. Create a new polynomial list result and set it as empty (NULL).
+Step 2: For each term t1 in poly1:
+•
+For each term t2 in poly2:
+1.
+Multiply the coefficients: coeff = t1.coeff * t2.coeff
+2.
+Add the exponents: exp = t1.exp + t2.exp
+3.
+Insert this term (coeff, exp) into result:
+▪
+If there is already a term with the same exponent in result, add the coefficients.
+▪
+Otherwise, insert a new node.
+Step 3: After multiplying all terms, rearrage terms in the order(if needed).
+Step 4: Display the result polynomial.
+Important Notes:
+•
+Insertion in result must check if same exponent exists → if yes, add coefficients.
+•
+If not, insert new node.
+•
+This is called term-by-term multiplication.
+Multiplication Example:
+•
+First Polynomial: 3x^2 + 5x^1
+•
+Second Polynomial: 2x^1 + 4x^0
+Multiply each term:
+Term from Poly1
+Term from Poly2
+Result Term
+3x²
+2x¹
+6x³
+3x²
+4x⁰
+12x²
+5x¹
+2x¹
+10x²
+5x¹
+4x⁰
+20x¹
+Now combine like terms:
+•
+6x^3
+•
+12x^2 + 10x^2 = 22x^2
+•
+20x^1
+Final Output:
+Resultant Polynomial after Multiplication: 6x^3 + 22x^2 + 20x^1
+C Program - Polynomial Multiplication using Linked List
+#include <stdio.h>
+#include <stdlib.h>
+struct Node {
+int coeff;
+int exp;
+struct Node* next;
+};
+// Function to create a new node
+struct Node* createNode(int coeff, int exp) {
+struct Node* newNode = (struct Node*)malloc(sizeof(struct Node));
+newNode->coeff = coeff;
+newNode->exp = exp;
+newNode->next = NULL;
+return newNode;
+}
+// Function to insert at the end
+struct Node* insertEnd(struct Node* head, int coeff, int exp) {
+struct Node* newNode = createNode(coeff, exp);
+if (head == NULL) {
+head = newNode;
+} else {
+struct Node* temp = head;
+while (temp->next != NULL)
+temp = temp->next;
+temp->next = newNode;
+}
+return head;
+}
+// Function to display a polynomial
+void display(struct Node* head) {
+if (head == NULL) {
+printf("NULL\n");
+return;
+}
+while (head != NULL) {
+printf("%dx^%d", head->coeff, head->exp);
+head = head->next;
+if (head != NULL && head->coeff >= 0)
+printf(" + ");
+}
+printf("\n");
+}
+// Function to search and add coefficient if exponent matches
+struct Node* addTerm(struct Node* result, int coeff, int exp) {
+struct Node* temp = result;
+struct Node* prev = NULL;
+while (temp != NULL) {
+if (temp->exp == exp) {
+temp->coeff += coeff;
+return result;
+}
+prev = temp;
+temp = temp->next;
+}
+// No matching term found, insert at end
+struct Node* newNode = createNode(coeff, exp);
+if (prev == NULL)
+result = newNode;
+else
+prev->next = newNode;
+return result;
+}
+// Function to multiply two polynomials
+struct Node* multiply(struct Node* poly1, struct Node* poly2) {
+struct Node* result = NULL;
+struct Node* ptr1 = poly1;
+struct Node* ptr2 = poly2;
+while (ptr1 != NULL) {
+ptr2 = poly2;
+while (ptr2 != NULL) {
+int coeff = ptr1->coeff * ptr2->coeff;
+int exp = ptr1->exp + ptr2->exp;
+result = addTerm(result, coeff, exp);
+ptr2 = ptr2->next;
+}
+ptr1 = ptr1->next;
+}
+return result;
+}
+// Main function
+int main() {
+struct Node* poly1 = NULL;
+struct Node* poly2 = NULL;
+struct Node* result = NULL;
+int n, coeff, exp, i;
+printf("Enter number of terms in first polynomial: ");
+scanf("%d", &n);
+printf("Enter coeff and exp for each term:\n");
+for (i = 0; i < n; i++) {
+scanf("%d%d", &coeff, &exp);
+poly1 = insertEnd(poly1, coeff, exp);
+}
+printf("Enter number of terms in second polynomial: ");
+scanf("%d", &n);
+printf("Enter coeff and exp for each term:\n");
+for (i = 0; i < n; i++) {
+scanf("%d%d", &coeff, &exp);
+poly2 = insertEnd(poly2, coeff, exp);
+}
+printf("\nFirst Polynomial: ");
+display(poly1);
+printf("Second Polynomial: ");
+display(poly2);
+result = multiply(poly1, poly2);
+printf("\nResultant Polynomial after Multiplication: ");
+display(result);
+return 0;
+}
+Output
+Enter number of terms in first polynomial: 3
+Enter coeff and exp for each term:
+2 2
+3 1
+2 0
+Enter number of terms in second polynomial: 2
+Enter coeff and exp for each term:
+4 2
+5 1
+First Polynomial: 2x^2 + 3x^1 + 2x^0
+Second Polynomial: 4x^2 + 5x^1
+Resultant Polynomial after Multiplication: 8x^4 + 22x^3 + 23x^2 + 10x^1
+C program to multiply polynomials and rearranging terms
+#include <stdio.h>
+#include <stdlib.h>
+struct Node {
+int coeff;
+int exp;
+struct Node* next;
+};
+// Function to create a new node
+struct Node* createNode(int coeff, int exp) {
+struct Node* newNode = (struct Node*)malloc(sizeof(struct Node));
+newNode->coeff = coeff;
+newNode->exp = exp;
+newNode->next = NULL;
+return newNode;
+}
+// Function to insert at the end
+struct Node* insertEnd(struct Node* head, int coeff, int exp) {
+struct Node* newNode = createNode(coeff, exp);
+if (head == NULL) {
+head = newNode;
+} else {
+struct Node* temp = head;
+while (temp->next != NULL)
+temp = temp->next;
+temp->next = newNode;
+}
+return head;
+}
+// Function to display a polynomial
+void display(struct Node* head) {
+if (head == NULL) {
+printf("NULL\n");
+return;
+}
+while (head != NULL) {
+printf("%dx^%d", head->coeff, head->exp);
+head = head->next;
+if (head != NULL && head->coeff >= 0)
+printf(" + ");
+}
+printf("\n");
+}
+// Function to search and add coefficient if exponent matches
+struct Node* addTerm(struct Node* result, int coeff, int exp) {
+struct Node* temp = result;
+struct Node* prev = NULL;
+while (temp != NULL) {
+if (temp->exp == exp) {
+temp->coeff += coeff;
+return result;
+}
+prev = temp;
+temp = temp->next;
+}
+// No matching term found, insert at end
+struct Node* newNode = createNode(coeff, exp);
+if (prev == NULL)
+result = newNode;
+else
+prev->next = newNode;
+return result;
+}
+// Function to multiply two polynomials
+struct Node* multiply(struct Node* poly1, struct Node* poly2) {
+struct Node* result = NULL;
+struct Node* ptr1 = poly1;
+struct Node* ptr2;
+while (ptr1 != NULL) {
+ptr2 = poly2;
+while (ptr2 != NULL) {
+int coeff = ptr1->coeff * ptr2->coeff;
+int exp = ptr1->exp + ptr2->exp;
+result = addTerm(result, coeff, exp);
+ptr2 = ptr2->next;
+}
+ptr1 = ptr1->next;
+}
+return result;
+}
+// Function to sort polynomial in descending order of exponents
+struct Node* sortDescending(struct Node* head) {
+if (head == NULL || head->next == NULL)
+return head;
+struct Node* i, *j;
+for (i = head; i->next != NULL; i = i->next) {
+for (j = i->next; j != NULL; j = j->next) {
+if (i->exp < j->exp) {
+// Swap coeff
+int tempCoeff = i->coeff;
+i->coeff = j->coeff;
+j->coeff = tempCoeff;
+// Swap exp
+int tempExp = i->exp;
+i->exp = j->exp;
+j->exp = tempExp;
+}
+}
+}
+return head;
+}
+// Main function
+int main() {
+struct Node* poly1 = NULL;
+struct Node* poly2 = NULL;
+struct Node* result = NULL;
+int n, m, coeff, exp, i;
+printf("Enter number of terms in first polynomial: ");
+scanf("%d", &n);
+printf("Enter coeff and exp for each term:\n");
+for (i = 0; i < n; i++) {
+scanf("%d%d", &coeff, &exp);
+poly1 = insertEnd(poly1, coeff, exp);
+}
+printf("Enter number of terms in second polynomial: ");
+scanf("%d", &m);
+printf("Enter coeff and exp for each term:\n");
+for (i = 0; i < m; i++) {
+scanf("%d%d", &coeff, &exp);
+poly2 = insertEnd(poly2, coeff, exp);
+}
+printf("\nFirst Polynomial: ");
+display(poly1);
+printf("Second Polynomial: ");
+display(poly2);
+result = multiply(poly1, poly2);
+result = sortDescending(result); // Sort the result polynomial by exponent descending
+printf("\nResultant Polynomial after Multiplication: ");
+display(result);
+return 0;
+}
+Enter number of terms in first polynomial: 3
+Enter coeff and exp for each term:
+3 2
+2 1
+1 0
+Enter number of terms in second polynomial: 3
+Enter coeff and exp for each term:
+5 3
+2 1
+2 0
+First Polynomial: 3x^2 + 2x^1 + 1x^0
+Second Polynomial: 5x^3 + 2x^1 + 2x^0
+Resultant Polynomial after Multiplication: 15x^5 + 10x^4 + 11x^3 + 10x^2 + 6x^1 + 2x^0
+Algorithm to implement Circular Queue using Linked List
+1. Node Structure:
+•
+Each node contains data and next pointer.
+struct Node {
+int data;
+struct Node* next;
+};
+2. Enqueue (Insert at Rear):
+•
+Create a new node.
+•
+If queue is empty, make both front and rear point to the new node. Set rear->next = front.
+•
+Else, insert the new node after rear, update rear, and link rear->next to front.
+3. Dequeue (Delete from Front):
+•
+If queue is empty, show underflow.
+•
+If only one node (front == rear), delete it and make front and rear NULL.
+•
+Else, move front to front->next, update rear->next = front, and free old front node.
+4. Display:
+•
+Start from front and move till you reach back to front again.
+C Program Circular Queue using Linked List
+#include <stdio.h>
+#include <stdlib.h>
+// Node structure
+struct Node {
+int data;
+struct Node* next;
+};
+struct Node *front = NULL, *rear = NULL;
+// Enqueue function
+void enqueue(int value) {
+struct Node* newNode = (struct Node*)malloc(sizeof(struct Node));
+newNode->data = value;
+newNode->next = NULL;
+if (front == NULL) {
+front = rear = newNode;
+rear->next = front; // Circular link
+} else {
+rear->next = newNode;
+rear = newNode;
+rear->next = front; // Keep it circular
+}
+printf("Inserted %d\n", value);
+}
+// Dequeue function
+void dequeue() {
+if (front == NULL) {
+printf("Queue is Empty\n");
+return;
+}
+if (front == rear) { // Only one node
+printf("Deleted %d\n", front->data);
+free(front);
+front = rear = NULL;
+} else {
+struct Node* temp = front;
+printf("Deleted %d\n", temp->data);
+front = front->next;
+rear->next = front;
+free(temp);
+}
+}
+// Display function
+void display() {
+if (front == NULL) {
+printf("Queue is Empty\n");
+return;
+}
+struct Node* temp = front;
+printf("Queue Elements: ");
+do {
+printf("%d ", temp->data);
+temp = temp->next;
+} while (temp != front);
+printf("\n");
+}
+// Main function
+int main() {
+int choice, value;
+while (1) {
+printf("\n1. Enqueue\n2. Dequeue\n3. Display\n4. Exit\n");
+printf("Enter your choice: ");
+scanf("%d", &choice);
+switch (choice) {
+case 1:
+printf("Enter value to insert: ");
+scanf("%d", &value);
+enqueue(value);
+break;
+case 2:
+dequeue();
+break;
+case 3:
+display();
+break;
+case 4:
+exit(0);
+default:
+printf("Invalid choice!\n");
+}
+}
+return 0;
+}
