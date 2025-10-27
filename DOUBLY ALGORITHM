@@ -1,0 +1,42 @@
+Algorithm
+1. Creation
+Define a node with three fields:
+data, next (pointer to next node), and prev (pointer to previous node).
+Initialize head = NULL to represent an empty list.
+2. Insertion at Beginning
+1. Create a new node and set newNode.data = value.
+2. Set newNode.next = head and newNode.prev = NULL.
+3. If head != NULL, set head.prev = newNode.
+4. Move head = newNode.
+3. Insertion at End
+1. Create a new node and set newNode.data = value.
+2. If list is empty, set head = newNode.
+3. Else, traverse to the last node.
+4. Set last.next = newNode and newNode.prev = last.
+4. Insertion at Position
+1. Traverse to the node before the desired position.
+2. Set newNode.next = current.next.
+3. Set newNode.prev = current.
+4. Update links:
+current.next.prev = newNode
+current.next = newNode.
+5. Deletion at Beginning
+1. If list is empty, exit.
+2. Move head = head.next.
+3. If head != NULL, set head.prev = NULL.
+4. Free the deleted node.
+6. Deletion at End
+1. If list is empty, exit.
+2. Traverse to the last node.
+3. If last.prev != NULL, set last.prev.next = NULL.
+4. Free the last node.
+7. Deletion at Position
+1. Traverse to the node at the given position.
+2. Update links:
+current.prev.next = current.next
+current.next.prev = current.prev (if current.next exists).
+3. Free the targeted node.
+8. Traverse Forward
+Start from head, follow next pointers, and print each node until NULL.
+9. Traverse Backward
+Go to the last node, then follow prev pointers backward to print all nodes.
