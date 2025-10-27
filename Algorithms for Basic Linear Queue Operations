@@ -1,0 +1,514 @@
+Algorithms for Basic Linear Queue Operations
+We assume:
+•
+queue[MAX] is an array to hold queue elements.
+•
+front and rear are integers.(-1 initially)
+•
+MAX is the maximum size.
+Algorithm for Enqueue (Insert element)
+Algorithm ENQUEUE(item)
+1. If rear == MAX - 1 then
+Output "Queue Overflow"
+Exit
+2. Else
+rear = rear + 1
+queue[rear] = item
+4. End If
+5. Return
+Algorithm for Dequeue (Remove element)
+Algorithm DEQUEUE()
+1. If front == rear then
+Output "Queue Underflow"
+Exit
+2. Else
+front = front + 1
+item = queue[front]
+3. End If
+4. Return item
+Note: if front==rear we can also reset queue to utilize space
+Algorithm for Peek (View Front Element)
+Algorithm PEEK()
+1. If front == rear then
+Output "Queue is Empty"
+Exit
+2. Else
+item = queue[front+1]
+3. End If
+4. Return item
+Algorithm for isEmpty (Check if queue is empty)
+Algorithm isEmpty()
+1. If front == rear then
+Return TRUE
+2. Else
+Return FALSE
+Program Code
+#include <stdio.h>
+#include<stdlib.h>
+#include <stdbool.h>
+#define MAX 10
+// initilazing queue
+int queue[MAX];
+int rear = - 1;
+int front = -1;
+// Function to check if the queue is empty
+bool isEmpty() {
+return rear==front ;
+}
+// Function to check if the queue is full
+bool isFull() {
+return rear == MAX - 1;
+}
+void enqueue() // enqueue
+{
+int item;
+if (isFull())
+printf("Queue Overflow \n");
+else
+{
+printf("\nInset the element in queue : ");
+scanf("%d", &item);
+rear = rear + 1;
+queue[rear] = item;
+}
+} /*End of insert()*/
+void dequeue() //dequeue
+{
+if (isEmpty() )
+{
+printf("\nQueue Underflow \n");
+return ;
+}
+else
+{
+front = front + 1;
+printf("\nElement deleted from queue is : %d\n", queue[front]);
+}
+} /*End of delete() ; if front==rear we also reset queue to utilize space*/
+void display()// print queue
+{
+int i;
+if (isEmpty() )
+printf("\nQueue is empty \n");
+else
+{
+printf("\nQueue is : ");
+for (i = front+1; i <= rear; i++)
+printf("%d ", queue[i]);
+printf("\n");
+}
+}
+// Function to peek at the front item
+int peek() {
+if (isEmpty()) {
+printf("Queue is empty. Nothing to peek.\n");
+return -1; // Error value
+} else {
+return queue[front+1];
+}
+}
+// Function to get the size of the queue
+int size() {
+if (isEmpty()) {
+return 0;
+} else {
+return rear - (front + 1)+1;
+}
+}
+int main()
+{
+int choice;
+while (1)
+{
+printf("\n1.Insert element to queue \n");
+printf("2.Delete element from queue \n");
+printf("3.Display all elements of queue \n");
+printf("4.Peek \n");
+printf("5.Size of the queue\n");
+printf("6.Quit \n");
+printf("\nEnter your choice : ");
+scanf("%d", &choice);
+switch (choice)
+{
+case 1:
+enqueue();
+break;
+case 2:
+dequeue();
+break;
+case 3:
+display();
+break;
+case 4:
+int x=peek();
+if(x!=-1) printf("\nfront element is=%d\n",x);
+break;
+case 5:
+printf("\nsize of the queue is =%d\n",size());
+break;
+case 6:
+exit(1);
+default:
+printf("\nWrong choice \n");
+} /*End of switch*/
+} /*End of while*/
+return 0;
+} /*End of main()*/
+Circular Queue
+Enqueue Operation
+Purpose: Add a new element at the rear of the circular queue.
+Algorithm Steps:
+Step 1: Check if the queue is full:
+Condition: (rear + 1) % size == front
+→ If true, print "Queue is Full"
+Step 2: If queue is empty (front == -1), set:
+front = rear = 0
+Step 3: Else, increment rear circularly:
+rear = (rear + 1) % size
+Step 4: Store the element at queue[rear]
+Dequeue Operation
+Purpose: Remove the element at the front of the queue.
+Algorithm Steps:
+Step 1: Check if the queue is empty:
+Condition: front == -1
+→ If true, print "Queue is Empty"
+Step 2: Save the element at queue[front] (to display)
+Step 3: If front == rear (only one element):
+Set front = rear = -1
+Step 4: Else, increment front circularly:
+front = (front + 1) % size
+Display Operation
+Purpose: Print all elements in the circular queue from front to rear.
+Algorithm Steps:
+Step 1: If queue is empty (front == -1):
+→ Print "Queue is Empty"
+Step 2: Else,
+Start from index i = front
+While i != rear:
+Print queue[i]
+i = (i + 1) % size
+Print queue[rear] (last element)
+Program Code
+#include <stdio.h>
+#include <stdlib.h>
+int *queue;
+int front = -1, rear = -1, size;
+// Check if queue is full
+int isFull() {
+return ((rear + 1) % size == front);
+}
+// Check if queue is empty
+int isEmpty() {
+return (front == -1);
+}
+// Enqueue operation
+void enqueue(int value) {
+if (isFull()) {
+printf("Queue Overflow! Cannot insert %d\n", value);
+return;
+}
+if (isEmpty()) {
+front = rear = 0;
+} else {
+rear = (rear + 1) % size;
+}
+queue[rear] = value;
+printf("Inserted %d\n", value);
+}
+// Dequeue operation
+void dequeue() {
+if (isEmpty()) {
+printf("Queue Underflow! Cannot dequeue\n");
+return;
+}
+int deletedValue = queue[front];
+if (front == rear) {
+// Only one element
+front = rear = -1;
+} else {
+front = (front + 1) % size;
+}
+printf("Deleted %d\n", deletedValue);
+}
+// Display operation
+void display() {
+if (isEmpty()) {
+printf("Queue is empty!\n");
+return;
+}
+printf("Queue elements: ");
+int i = front;
+while (1) {
+printf("%d ", queue[i]);
+if (i == rear)
+break;
+i = (i + 1) % size;
+}
+printf("\n");
+}
+// Main function
+int main() {
+int choice, value;
+printf("Enter the size of the circular queue: ");
+scanf("%d", &size);
+if (size <= 0) {
+printf("Invalid size! Exiting.\n");
+return 1;
+}
+queue = (int *)malloc(size * sizeof(int));
+if (queue == NULL) {
+printf("Memory allocation failed!\n");
+return 1;
+}
+while (1) {
+printf("\n--- Circular Queue Menu ---\n");
+printf("1. Enqueue (Insert)\n2. Dequeue (Delete)\n3. Display\n4. Exit\n");
+printf("Enter your choice: ");
+scanf("%d", &choice);
+switch (choice) {
+case 1:
+printf("Enter value to insert: ");
+scanf("%d", &value);
+enqueue(value);
+break;
+case 2:
+dequeue();
+break;
+case 3:
+display();
+break;
+case 4:
+printf("Exiting program.\n");
+free(queue);
+return 0;
+default:
+printf("Invalid choice! Please try again.\n");
+}
+}
+return 0;
+}
+Enter the size of the circular queue: 3
+--- Circular Queue Menu ---
+1. Enqueue (Insert)
+2. Dequeue (Delete)
+3. Display
+4. Exit
+Enter your choice: 1
+Enter value to insert: 10
+Inserted 10
+Enter your choice: 1
+Enter value to insert: 20
+Inserted 20
+Enter your choice: 1
+Enter value to insert: 30
+Inserted 30
+Enter your choice: 1
+Enter value to insert: 40
+Queue Overflow! Cannot insert 40
+Enter your choice: 3
+Queue elements: 10 20 30
+Enter your choice: 2
+Deleted 10
+Enter your choice: 3
+Queue elements: 20 30
+Doubly Ended Queue
+Algorithms (assuming circular array with front = -1, rear = -1 initially)
+Algorithm Initialize Deque
+front = -1 rear= -1
+Algorithm for isEmpty()
+1. If front ==-1 AND rear== -1
+Return TRUE
+2. Else
+Return FALSE
+Algorithm for isFull()
+1. If (rear + 1) mod MAX = front then
+Return TRUE
+2. Else
+Return FALSE
+Algorithm for Insert Front
+1. If Deque is Full
+Output "Deque Overflow"
+Exit
+2. If Deque is Empty
+Set front ← 0 , Set rear ← 0
+3. Else
+Set front ← (front - 1 + MAX) mod MAX
+4. Set deque[front] ← item
+Algorithm for Insert Rear
+1. If Deque is Full
+Output "Deque Overflow"
+Exit
+2. If Deque is Empty
+Set front ← 0
+Set rear ← 0
+3. Else
+Set rear ← (rear + 1) mod MAX
+4. Set deque[rear] ← item
+Algorithm for Delete Front
+1. If Deque is Empty
+Output "Deque Underflow"
+Exit
+2. Output deque[front] as deleted element
+3. If front = rear
+Set front ← -1
+Set rear ← -1
+4. Else
+Set front ← (front + 1) mod MAX
+Algorithm for Delete Rear
+1. If Deque is Empty
+Output "Deque Underflow"
+Exit
+2. Output deque[rear] as deleted element
+3. If front = rear
+Set front ← -1
+Set rear ← -1
+4. Else
+Set rear ← (rear - 1 + MAX) mod MAX
+Display Deque Elements
+1. If Deque is Empty
+Output "Deque is empty"
+Exit
+2. Set i ← front
+3. Repeat
+Output deque[i]
+Set i ← (i + 1) mod MAX
+Until i = (rear + 1) mod MAX
+Peek Front Element
+1. If front = -1 then
+Output "Deque is empty"
+Exit
+2. Else
+Output deque[front] as the front element
+Peek Rear Element
+1. If rear = -1 then
+Output "Deque is empty"
+Exit
+2. Else
+Output deque[rear] as the rear element
+Program Code
+#include <stdio.h>
+#include <stdlib.h>
+#define MAX 5
+int deque[MAX];
+int front = -1, rear = -1;
+// Function to check if deque is full
+int isFull() {
+return ((rear + 1) % MAX == front);
+}
+// Function to check if deque is empty
+int isEmpty() {
+return (front == -1);
+}
+// Insert element at front
+void insertFront(int item) {
+if (isFull()) {
+printf("Deque Overflow! Cannot insert at front.\n");
+return;
+}
+if (isEmpty()) {
+front = rear = 0;
+} else {
+front = (front - 1 + MAX) % MAX;
+}
+deque[front] = item;
+printf("Inserted %d at front.\n", item);
+}
+// Insert element at rear
+void insertRear(int item) {
+if (isFull()) {
+printf("Deque Overflow! Cannot insert at rear.\n");
+return;
+}
+if (isEmpty()) {
+front = rear = 0;
+} else {
+rear = (rear + 1) % MAX;
+}
+deque[rear] = item;
+printf("Inserted %d at rear.\n", item);
+}
+// Delete element from front
+void deleteFront() {
+if (isEmpty()) {
+printf("Deque Underflow! Cannot delete from front.\n");
+return;
+}
+printf("Deleted element from front: %d\n", deque[front]);
+if (front == rear) {
+front = rear = -1; // Only one element was present
+} else {
+front = (front + 1) % MAX;
+}
+}
+// Delete element from rear
+void deleteRear() {
+if (isEmpty()) {
+printf("Deque Underflow! Cannot delete from rear.\n");
+return;
+}
+printf("Deleted element from rear: %d\n", deque[rear]);
+if (front == rear) {
+front = rear = -1; // Only one element was present
+} else {
+rear = (rear - 1 + MAX) % MAX;
+}
+}
+// Display deque elements
+void display() {
+int i;
+if (isEmpty()) {
+printf("Deque is empty.\n");
+return;
+}
+printf("Deque elements: ");
+i = front;
+while (1) {
+printf("%d ", deque[i]);
+if (i == rear)
+break;
+i = (i + 1) % MAX;
+}
+printf("\n");
+}
+// Main function
+int main() {
+int choice, item;
+while (1) {
+printf("\n***** MENU *****\n");
+printf("1. Insert Front\n");
+printf("2. Insert Rear\n");
+printf("3. Delete Front\n");
+printf("4. Delete Rear\n");
+printf("5. Display\n");
+printf("6. Exit\n");
+printf("Enter your choice: ");
+scanf("%d", &choice);
+switch (choice) {
+case 1:
+printf("Enter the element to insert at front: ");
+scanf("%d", &item);
+insertFront(item);
+break;
+case 2:
+printf("Enter the element to insert at rear: ");
+scanf("%d", &item);
+insertRear(item);
+break;
+case 3:
+deleteFront();
+break;
+case 4:
+deleteRear();
+break;
+case 5:
+display();
+break;
+case 6:
+printf("Exiting program.\n");
+exit(0);
+default:
+printf("Invalid choice! Please try again.\n");
+}
+}
+return 0;
+}
